@@ -137,6 +137,7 @@
 	'use strict';
 
 	var INITIALISED = 'data-kmnd-tabs-initialised';
+	var observed = [];
 
 	function activateFirstTab( group ) {
 		if ( group.hasAttribute( INITIALISED ) ) {
@@ -184,8 +185,17 @@
 		} );
 	}
 
-	function watch() {
-		repair( document );
+	function isObserved( doc ) {
+		return observed.indexOf( doc ) !== -1;
+	}
+
+	function observe( doc ) {
+		if ( ! doc || ! doc.body || isObserved( doc ) ) {
+			return;
+		}
+
+		observed.push( doc );
+		repair( doc );
 
 		if ( ! window.MutationObserver ) {
 			return;
@@ -196,9 +206,47 @@
 		new MutationObserver( function () {
 			clearTimeout( pending );
 			pending = setTimeout( function () {
-				repair( document );
+				repair( doc );
 			}, 150 );
-		} ).observe( document.body, { childList: true, subtree: true } );
+		} ).observe( doc.body, { childList: true, subtree: true } );
+	}
+
+	function scan() {
+		observe( document );
+
+		Array.prototype.forEach.call( document.querySelectorAll( 'iframe' ), function ( frame ) {
+			var doc;
+
+			try {
+				doc = frame.contentDocument;
+			} catch ( err ) {
+				return;
+			}
+
+			observe( doc );
+		} );
+	}
+
+	function watch() {
+		scan();
+
+		if ( window.MutationObserver ) {
+			new MutationObserver( scan ).observe( document.body, {
+				childList: true,
+				subtree: true,
+			} );
+		}
+
+		// Gutenberg may create the canvas iframe before its document is ready
+		// without mutating the outer document again. Cover that short boot window.
+		var attempts = 0;
+		var timer = setInterval( function () {
+			scan();
+			attempts++;
+			if ( attempts >= 40 ) {
+				clearInterval( timer );
+			}
+		}, 500 );
 	}
 
 	if ( 'loading' === document.readyState ) {
