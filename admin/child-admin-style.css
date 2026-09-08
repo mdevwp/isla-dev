@@ -1,0 +1,132 @@
+a.acf-icon.-collapse.small {
+    display: block!important;
+    margin-top: 60px!important;
+}
+.-collapsed .acf-icon.-collapse:before {
+    content: "\f140";
+    margin-left: -0.1em;
+    font-size: 15pt;
+}
+
+.wp-block-button__link,
+.wp-element-button{
+	background: linear-gradient(90deg, #EE7324 0%, #FFB422 98%);
+    color: #fff!important;
+	border: none;
+    font-family: Manrope;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 24.59px;
+    text-align: left;
+    text-decoration: none;
+	margin-bottom: 20px;
+	position: relative;
+    font-family: Manrope, sans-serif;
+    justify-content: center;
+    padding: 5px 32px; 
+	max-height: 44px!important;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.wp-element-button:hover {
+    background: #f8f8f8 !important;
+    border: 2.5px solid #f18023;
+    color: #242331!important;
+    padding: 3px 32px; 
+}
+
+/****************/
+
+.has-primary-to-secondary-gradient-background {
+    background: linear-gradient(90deg, #E96126 0%, #F3851E 99.91%)!important;
+}
+
+
+.has-black-color { 
+	color: #242331!important;
+}
+.has-grey-color { 
+	color: #797979!important;
+}
+.has-orange-color { 
+	color: #EE7324!important;
+}
+.has-black-background-color { 
+	background-color: #242331!important;
+}
+.has-grey-background-color { 
+	background-color: #797979!important;
+}
+.has-orange-background-color { 
+	background-color: #EE7324!important;
+}
+/**********************************/
+
+.has-cloudy-grey-color { 
+	color: #EEEDEE!important;
+}
+.has-deep-blue-color { 
+	color: #15253C!important;
+}
+.has-isla-orange-color { 
+	color: #F47A22!important;
+}
+.has-cloudy-grey-background-color { 
+	background-color: #EEEDEE!important;
+}
+.has-deep-blue-background-color { 
+	background-color: #15253C!important;
+}
+.has-isla-orange-background-color { 
+	background-color: #F47A22!important;
+}
+
+.has-sunshine-yellow-color { 
+	color: #F4B61E!important;
+}
+.has-nearly-white-color { 
+	color: #FDFDFD!important;
+}
+.has-obsidian-color { 
+	color: #0E1215!important;
+}
+
+.has-sunshine-yellow-background-color { 
+	background-color: #F4B61E!important;
+}
+.has-nearly-white-background-color { 
+	background-color: #FDFDFD!important;
+}
+.has-obsidian-background-color { 
+	background-color: #0E1215!important;
+}
+
+
+.section_desc ul,
+ul.wp-block-list{
+	list-style: none; 
+	padding-left: 0; 
+}
+ul.wp-block-list{
+	margin-bottom: 15px;
+}
+
+.section_desc ul li,
+ul.wp-block-list li{
+	position: relative; 
+	padding-left: 30px; 
+}
+.section_desc ul li::before,
+ul.wp-block-list li::before {
+	content: ''; 
+	position: absolute;
+	left: 10px; 
+	top: 15px;
+	transform: translateY(-50%); 
+	width: 6px; 
+	height: 6px; 
+	background: #F47522; 
+	border-radius: 50%; 
+}

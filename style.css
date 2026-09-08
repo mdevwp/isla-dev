@@ -1,0 +1,133 @@
+/*
+ Theme Name:   Kmnd Child
+ Author:       Komanda
+ Template:     kmnd-theme
+*/
+
+.wp-block-button__link, .wp-element-button,
+a.btn.cta-button.load-more,
+.header .nav__row .btn,
+.cta-button, .button,
+.book-demo-btn{
+	background: #F56612;
+}
+
+
+.find-out-more:hover,
+.btn.cta-button:hover,
+.btn.book-demo-btn:hover,
+.btn.call-to-action:hover,
+.acute-care-container .cta-button:hover,
+.solutions .book-demo-btn:hover,
+.how-it-works-btn, .login-button,
+.nav__row .btn:hover,
+.menu-item.active,
+.nav-item.active,
+.menu-item.current-menu-item/*,
+.menu-item:hover*/{
+    border: 2.5px solid #F56612;
+	border-radius: 37px;
+}
+
+.search-box, .tag.active, .article-tag.active, .tag:hover {
+    border: 2.5px solid #F56612 !important;
+}
+.stat-value,
+.how-it-works-btn{
+	color: #F56612;
+}
+.article__wrapp .article-content a,
+.stat_card .num>span, .num>b,
+.stat-number, .highlighted-text,
+.login-button{
+	color: #F56612;
+}
+.has-luminous-vivid-orange-color {
+    color: #F56612!important;
+}
+.cta__button {
+    border: 4px solid #F56612;
+    color: #F56612;
+}
+.webinar-container {
+    background: linear-gradient(108deg, #F56612 15.95%, #f6b34e 100%);
+}
+.t-swiper .slide-item {
+    border: 1px solid #F56612;
+}
+.has-isla-orange-color,
+.has-orange-color {
+	color: #F56612!important;
+}
+.has-orange-background-color {
+	background-color: #F56612!important;
+}
+.vector {
+    background: url(assets/images/vector2.svg) center center / cover no-repeat;
+}
+
+.webinar-container {
+    background: #F56612;
+}
+
+.swiper-slide img.img-4{
+	max-height: 70px;
+	padding: 20px;
+}
+
+img.p-logo.img-4 {
+    transform: scale(1);
+}
+
+@media (min-width: 991px){
+	.partner-logos.grey_bg .swiper-slide img {
+		width: 169px;
+		height: 165px;
+	}
+	.p-logo {
+
+		object-fit: contain;
+		align-self: start;
+		margin-top: 0px;
+		max-width: fit-content;
+	}
+}
+
+.icon-wrapper {
+    background: #F56612!important;
+}
+
+.team-section .heading{
+	font: 800 50px / 136% Manrope, sans-serif!important;
+}
+@media (max-width: 1439px) {
+  .team-section .heading{
+	  font: 800 40px / 132% Manrope, sans-serif!important;
+  }
+}
+.team-member .card:after {
+    content: '';
+    position: absolute;
+    width: 252px;
+    margin-top: 65px;
+    height: 250px;
+    border-radius: 30px;
+    background-color: #FFDBC0;
+    z-index: -1;
+}
+p.hero-description {
+	margin-bottom: 20px;
+}
+
+@media (min-width: 992px) and (max-width: 1335px) {
+	.hero-cta-buttons {
+		margin-top: 15px;
+	}
+}
+
+@media (max-width: 991px){
+	.team-member .card:after {
+		margin-top: -3px;
+
+	}
+}

@@ -1,0 +1,410 @@
+/* ==========================================================================
+   DPP Video Section  (block: acf/dpp-video)
+   Namespaced under .dpp-video-section so it cannot collide with the
+   legacy .video-section rules in assets/css/style.css
+   ========================================================================== */
+
+/* Values marked [Figma] are taken straight from the inspector on the
+   1920×1127 "Stats section" frame:
+     section fill        #F7F7F7
+     card                1419×823, radius 28.8, fill #FFFFFF
+     card drop shadow    x0 y0 blur40 spread10 #000000 @ 10%
+     inner video         1351.38×755.92 (16:9), radius 20
+     card padding        ≈34.7px  →  2.45% of the card width
+     play button         ≈139px Ø, centre at ≈60% of the video height     */
+
+.dpp-video-section {
+	--dpp-orange: #f56612;                /* [Figma] play button / site CTA orange */
+	--dpp-orange-hover: #e35a08;
+	--dpp-ink: #242331;
+	--dpp-muted: #5b5a68;
+	--dpp-card-max: 1419px;               /* [Figma] */
+	--dpp-card-radius: 28.8px;            /* [Figma] */
+	--dpp-media-radius: 20px;             /* [Figma] */
+	--dpp-card-pad: clamp(12px, 2.45%, 35px); /* [Figma] 34.7px at 1419px */
+	--dpp-play-width: 10.7%;              /* [Figma] 145px of a 1351px video */
+	--dpp-play-min: 54px;
+	--dpp-play-max: 145px;
+	--dpp-play-offset: 60%;               /* [Figma] just below the chin */
+	--dpp-play-color: var(--dpp-orange);
+
+	/* Overridable from the block settings (written inline on the section) */
+	--dpp-bg: #f7f7f7;                    /* [Figma] */
+	--dpp-card-bg: #fff;                  /* [Figma] */
+	--dpp-heading-color: var(--dpp-ink);
+	--dpp-heading-align: center;
+	--dpp-aspect: 16 / 9;
+	--dpp-padding: 100px;                 /* in step with .video-section.v3 */
+
+	background-color: var(--dpp-bg);
+	padding: var(--dpp-padding) 0;
+}
+
+.dpp-video-section__container {
+	max-width: 90%;
+}
+
+/* ---------- Heading ------------------------------------------------------ */
+
+.dpp-video-section h2.dpp-video-section__heading {
+	/* .main-heading supplies Manrope 800 / 50px / 110% / -3% tracking.
+	   Colour is pinned to the same ink as every other homepage H2. */
+	color: var(--dpp-heading-color);
+	margin: 0 auto 44px;
+	/* wide enough for the title to sit on two balanced lines */
+	max-width: 900px;
+	text-align: var(--dpp-heading-align);
+	text-wrap: balance;
+}
+
+/* Left-aligned heading lines up with the left edge of the card. */
+.dpp-video-section--heading-left h2.dpp-video-section__heading {
+	max-width: var(--dpp-card-max);
+}
+
+/* ---------- Card --------------------------------------------------------- */
+
+.dpp-video-section__figure {
+	margin: 0;
+}
+
+.dpp-video-section__card {
+	max-width: var(--dpp-card-max);
+	margin-inline: auto;
+	padding: var(--dpp-card-pad);
+	background: var(--dpp-card-bg);
+	border-radius: var(--dpp-card-radius);
+	/* [Figma] drop shadow: x0 y0 blur40 spread10 #000000 @ 10% */
+	box-shadow: 0 0 40px 10px rgba(0, 0, 0, 0.10);
+}
+
+/* Matches .slide-item in assets/css/style.css — the testimonial cards as
+   they are actually built on the site today. */
+.dpp-video-section--shadow-testimonials .dpp-video-section__card {
+	box-shadow: 4px 4px 40px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dpp-video-section--shadow-none .dpp-video-section__card {
+	box-shadow: none;
+}
+
+.dpp-video-section__stage {
+	position: relative;
+	aspect-ratio: var(--dpp-aspect);
+	border-radius: var(--dpp-media-radius);
+	overflow: hidden;
+	background: #0e1215;
+	isolation: isolate;
+}
+
+.dpp-video-section__stage picture {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	display: block;
+	transition: opacity 0.25s ease;
+}
+
+.dpp-video-section.is-playing .dpp-video-section__stage picture {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.dpp-video-section__video,
+.dpp-video-section__poster {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	border-radius: inherit;
+}
+
+.dpp-video-section__poster {
+	z-index: 1;
+	transition: opacity 0.25s ease;
+}
+
+.dpp-video-section.is-playing .dpp-video-section__poster {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.dpp-video-section__yt,
+.dpp-video-section__yt-frame,
+.dpp-video-section .dpp-video-section__stage noscript iframe {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	border: 0;
+	border-radius: inherit;
+}
+
+.dpp-video-section__yt {
+	z-index: 3;
+}
+
+.dpp-video-section__fallback {
+	position: absolute;
+	inset: 0;
+	display: grid;
+	place-content: center;
+	padding: 24px;
+	color: #fff;
+	text-align: center;
+}
+
+/* ---------- Play button -------------------------------------------------- */
+
+.dpp-video-section__play {
+	position: absolute;
+	z-index: 2;
+	left: 50%;
+	top: var(--dpp-play-offset);
+	transform: translate(-50%, -50%);
+
+	display: block;
+	/* scales with the video the way it does in Figma, with sane bounds */
+	width: clamp(var(--dpp-play-min), var(--dpp-play-width), var(--dpp-play-max));
+	aspect-ratio: 145 / 147;   /* [Figma] exported button geometry */
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: none;
+	color: var(--dpp-play-color);
+	cursor: pointer;
+	transition: transform 0.2s ease, color 0.2s ease, filter 0.2s ease;
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+/* The SVG draws the whole control (disc + outer ring + white triangle). */
+.dpp-video-section__play-icon {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+/* A custom uploaded button keeps its own artwork and aspect. */
+.dpp-video-section__play--custom {
+	aspect-ratio: auto;
+	border-radius: 0;
+}
+
+img.dpp-video-section__play-icon {
+	height: auto;
+	object-fit: contain;
+}
+
+.dpp-video-section__play:hover,
+.dpp-video-section__play:focus-visible {
+	transform: translate(-50%, -50%) scale(1.05);
+	filter: brightness(0.92) drop-shadow(0 10px 26px rgba(0, 0, 0, 0.25));
+}
+
+.dpp-video-section__play:focus-visible {
+	outline: 3px solid #15253c;
+	outline-offset: 4px;
+}
+
+.dpp-video-section.is-playing .dpp-video-section__play {
+	opacity: 0;
+	visibility: hidden;
+	transform: translate(-50%, -50%) scale(0.85);
+}
+
+/* ---------- Transcript --------------------------------------------------- */
+
+.dpp-video-section__transcript {
+	max-width: var(--dpp-card-max);
+	margin: 28px auto 0;
+	font-family: Manrope, sans-serif;
+	color: var(--dpp-muted);
+}
+
+.dpp-video-section__transcript-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+	list-style: none;
+	font-size: 17px;
+	font-weight: 700;
+	color: var(--dpp-ink);
+	padding: 6px 2px;
+}
+
+.dpp-video-section__transcript-toggle::-webkit-details-marker {
+	display: none;
+}
+
+.dpp-video-section__transcript-toggle::before {
+	content: "";
+	width: 10px;
+	height: 10px;
+	border-right: 2px solid var(--dpp-orange);
+	border-bottom: 2px solid var(--dpp-orange);
+	transform: rotate(45deg) translate(-2px, -2px);
+	transition: transform 0.2s ease;
+}
+
+.dpp-video-section__transcript[open] .dpp-video-section__transcript-toggle::before {
+	transform: rotate(-135deg) translate(-3px, -3px);
+}
+
+.dpp-video-section__transcript-toggle:focus-visible {
+	outline: 3px solid #15253c;
+	outline-offset: 3px;
+	border-radius: 4px;
+}
+
+.dpp-video-section__transcript-body {
+	padding: 14px 0 4px;
+	font-size: 17px;
+	line-height: 30px;
+	max-width: 78ch;
+}
+
+.dpp-video-section__transcript-body p {
+	margin: 0 0 14px;
+}
+
+/* ---------- Optional CTA ------------------------------------------------- */
+
+.dpp-video-section__cta {
+	margin-top: 40px;
+	text-align: center;
+}
+
+/* ---------- Screen-reader helper (theme may not define it globally) ------- */
+
+.dpp-video-section .screen-reader-text {
+	position: absolute !important;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* ---------- Placeholder hint (staging only) ------------------------------ */
+
+/* Sits below the card, outside the white area, and disappears on its own
+   as soon as a real MP4/WebM is set on the block. */
+.dpp-video-section--placeholder .dpp-video-section__figure::after {
+	content: "Placeholder media — final MP4, poster & captions to be added via the block settings";
+	display: block;
+	max-width: var(--dpp-card-max);
+	margin: 14px auto 0;
+	font: 500 13px/1.4 Manrope, sans-serif;
+	color: #9a9aa6;
+}
+
+/* ==========================================================================
+   Responsive — mirrors the breakpoints already used by the homepage blocks
+   ========================================================================== */
+
+@media (max-width: 1336px) {
+	.dpp-video-section h2.dpp-video-section__heading {
+		margin-bottom: 30px;
+	}
+}
+
+@media (max-width: 1024px) {
+	.dpp-video-section {
+		--dpp-card-radius: 26px;
+		--dpp-play-max: 104px;
+	}
+
+	.dpp-video-section__container {
+		width: 100%;
+	}
+
+	.dpp-video-section h2.dpp-video-section__heading {
+		max-width: 700px;
+	}
+}
+
+@media (max-width: 991px) {
+	.dpp-video-section {
+		/* identical to .video-section.v3 on mobile: 70px / 50px at the 100px default */
+		padding: calc(var(--dpp-padding) * 0.7) 0 calc(var(--dpp-padding) * 0.5);
+	}
+}
+
+@media (max-width: 768px) {
+	.dpp-video-section {
+		--dpp-card-radius: 20px;
+		--dpp-media-radius: 12px;
+		--dpp-play-max: 78px;
+	}
+
+	.dpp-video-section__container {
+		max-width: 100%;
+	}
+
+	.dpp-video-section h2.dpp-video-section__heading {
+		/* the theme keeps .main-heading at 40px here, which is too heavy for
+		   a title this long on a phone — step it down and tighten the leading */
+		font-size: 28px;
+		line-height: 120%;
+		letter-spacing: -0.02em;
+		max-width: none;
+		margin-bottom: 24px;
+	}
+
+	.dpp-video-section__transcript-toggle,
+	.dpp-video-section__transcript-body {
+		font-size: 16px;
+	}
+
+	.dpp-video-section__transcript-body {
+		line-height: 27px;
+	}
+
+	.dpp-video-section--placeholder .dpp-video-section__figure::after {
+		font-size: 12px;
+	}
+}
+
+@media (max-width: 480px) {
+	.dpp-video-section {
+		--dpp-play-max: 64px;
+	}
+
+	.dpp-video-section h2.dpp-video-section__heading {
+		font-size: 26px;
+		margin-bottom: 20px;
+	}
+}
+
+/* ==========================================================================
+   Accessibility preferences
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+	.dpp-video-section__play,
+	.dpp-video-section__poster,
+	.dpp-video-section__transcript-toggle::before {
+		transition: none;
+	}
+
+	.dpp-video-section__play:hover,
+	.dpp-video-section__play:focus-visible {
+		transform: translate(-50%, -50%);
+	}
+}
+
+@media (forced-colors: active) {
+	.dpp-video-section__play {
+		forced-color-adjust: none;
+		border: 2px solid ButtonText;
+		background: ButtonFace;
+	}
+}
