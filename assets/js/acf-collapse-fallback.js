@@ -157,10 +157,6 @@
 	}
 
 	function repair( root ) {
-		if ( ! window.acf || ! window.jQuery ) {
-			return;
-		}
-
 		var groups = root.querySelectorAll( '.acf-fields' );
 
 		Array.prototype.forEach.call( groups, function ( group ) {
@@ -172,6 +168,10 @@
 			}
 
 			if ( ! hasTabStrip ) {
+				if ( ! window.acf || ! window.jQuery ) {
+					return;
+				}
+
 				try {
 					window.acf.doAction( 'append', window.jQuery( group ) );
 				} catch ( err ) {
