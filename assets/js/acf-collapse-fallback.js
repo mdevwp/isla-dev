@@ -190,7 +190,12 @@
 	}
 
 	function observe( doc ) {
-		if ( ! doc || ! doc.body || isObserved( doc ) ) {
+		if ( ! doc || ! doc.body ) {
+			return;
+		}
+
+		if ( isObserved( doc ) ) {
+			repair( doc );
 			return;
 		}
 
