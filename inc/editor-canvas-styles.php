@@ -86,9 +86,9 @@ add_action( 'enqueue_block_editor_assets', function () {
 
 	wp_enqueue_script(
 		'kmnd-acf-collapse-fallback',
-		get_stylesheet_directory_uri() . '/assets/js/acf-collapse-fallback.js',
+		get_stylesheet_directory_uri() . '/assets/js/acf-collapse-fallback.js?v=' . (string) filemtime( $path ),
 		array(),
-		(string) filemtime( $path ),
+		null,
 		true
 	);
 } );
