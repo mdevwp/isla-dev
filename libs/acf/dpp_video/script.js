@@ -122,19 +122,27 @@
 		// On mobile, tapping the picture of a paused native player should resume
 		// immediately. Leave the bottom controls strip alone so Pause, volume,
 		// seeking and fullscreen keep their normal browser behaviour.
-		video.addEventListener('click', function (event) {
+		function resumeFromPicture(event) {
 			if (!window.matchMedia('(max-width: 767px)').matches ||
 				!video.paused || video.ended) {
 				return;
 			}
 
+			var rect = video.getBoundingClientRect();
 			var controlsHeight = 56;
-			if (event.offsetY >= video.clientHeight - controlsHeight) {
+			if (event.clientY >= rect.bottom - controlsHeight) {
 				return;
 			}
 
+			event.preventDefault();
 			start();
-		});
+		}
+
+		// Native mobile controls may consume `click` before it reaches the video.
+		// Pointer-up runs earlier and reliably catches a tap on the picture, while
+		// the paused-state check leaves a tap on the Pause control untouched.
+		video.addEventListener('pointerup', resumeFromPicture, true);
+		video.addEventListener('click', resumeFromPicture);
 	}
 
 	function initAll(root) {
