@@ -136,6 +136,25 @@
 (function () {
 	'use strict';
 
+	var INITIALISED = 'data-kmnd-tabs-initialised';
+
+	function activateFirstTab( group ) {
+		if ( group.hasAttribute( INITIALISED ) ) {
+			return;
+		}
+
+		var firstTab = group.querySelector( ':scope > .acf-tab-wrap .acf-tab-button' );
+		if ( ! firstTab ) {
+			return;
+		}
+
+		// ACF can render the first panel as visible before its TabField model has
+		// selected a tab. Running the same click as an editor does completes that
+		// state, after which the remaining tab buttons respond normally.
+		group.setAttribute( INITIALISED, 'true' );
+		firstTab.click();
+	}
+
 	function repair( root ) {
 		if ( ! window.acf || ! window.jQuery ) {
 			return;
@@ -147,15 +166,21 @@
 			var hasTabField = group.querySelector( ':scope > .acf-field-tab' );
 			var hasTabStrip = group.querySelector( ':scope > .acf-tab-wrap' );
 
-			if ( ! hasTabField || hasTabStrip ) {
-				return; // no tabs here, or they are already built
+			if ( ! hasTabField ) {
+				return;
 			}
 
-			try {
-				window.acf.doAction( 'append', window.jQuery( group ) );
-			} catch ( err ) {
-				/* leave the flat list rather than break the editor */
+			if ( ! hasTabStrip ) {
+				try {
+					window.acf.doAction( 'append', window.jQuery( group ) );
+				} catch ( err ) {
+					return; // leave the flat list rather than break the editor
+				}
 			}
+
+			window.requestAnimationFrame( function () {
+				activateFirstTab( group );
+			} );
 		} );
 	}
 
