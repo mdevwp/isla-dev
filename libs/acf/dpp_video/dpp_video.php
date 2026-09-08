@@ -41,6 +41,7 @@ if ( 'youtube' === $source && $youtube_url ) {
 $is_youtube = ( 'youtube' === $source && '' !== $youtube_id );
 $poster_fld = get_field( 'dpp_poster' );
 $mp4        = get_field( 'dpp_video_mp4' );
+$mp4_mobile = get_field( 'dpp_video_mp4_mobile' );
 $webm       = get_field( 'dpp_video_webm' );
 $captions   = get_field( 'dpp_captions' );
 $transcript = get_field( 'dpp_transcript' );
@@ -261,8 +262,11 @@ $has_transcript  = $show_transcript && '' !== $transcript_text;
 						height="<?= esc_attr( $poster_h ); ?>"
 						aria-label="<?= esc_attr( $video_label ); ?>"
 						<?= $has_transcript ? 'aria-describedby="' . esc_attr( $transcript_id ) . '"' : ''; ?>>
+						<?php if ( $mp4_mobile ) : ?>
+							<source src="<?= esc_url( $mp4_mobile ); ?>" type="video/mp4" media="(max-width: 767px)">
+						<?php endif; ?>
 						<?php if ( $webm ) : ?>
-							<source src="<?= esc_url( $webm ); ?>" type="video/webm">
+							<source src="<?= esc_url( $webm ); ?>" type="video/webm"<?= $mp4_mobile ? ' media="(min-width: 768px)"' : ''; ?>>
 						<?php endif; ?>
 						<?php if ( $mp4 ) : ?>
 							<source src="<?= esc_url( $mp4 ); ?>" type="video/mp4">

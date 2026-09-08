@@ -115,6 +115,16 @@ acf_add_local_field_group( array(
 			'mime_types'    => 'mp4,m4v',
 		),
 		array(
+			'key'               => 'field_dpp_video_mp4_mobile',
+			'conditional_logic' => array( array( array( 'field' => 'field_dpp_source', 'operator' => '==', 'value' => 'file' ) ) ),
+			'label'             => 'Mobile video — MP4 (optional)',
+			'name'              => 'dpp_video_mp4_mobile',
+			'type'              => 'file',
+			'return_format'     => 'url',
+			'instructions'      => 'Optional lighter H.264 / AAC MP4 for screens up to 767px. Keep the same duration and captions as the main video. Recommended 640×360 or 854×480, target 2–5&nbsp;MB.',
+			'mime_types'        => 'mp4,m4v',
+		),
+		array(
 			'key'           => 'field_dpp_video_webm',
 			'conditional_logic' => array( array( array( 'field' => 'field_dpp_source', 'operator' => '==', 'value' => 'file' ) ) ),
 			'label'         => 'Video file — WebM (optional)',

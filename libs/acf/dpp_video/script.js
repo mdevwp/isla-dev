@@ -118,6 +118,23 @@
 		// Keep the two states in sync if playback is started from the
 		// native controls (possible once they are visible).
 		video.addEventListener('play', reveal);
+
+		// On mobile, tapping the picture of a paused native player should resume
+		// immediately. Leave the bottom controls strip alone so Pause, volume,
+		// seeking and fullscreen keep their normal browser behaviour.
+		video.addEventListener('click', function (event) {
+			if (!window.matchMedia('(max-width: 767px)').matches ||
+				!video.paused || video.ended) {
+				return;
+			}
+
+			var controlsHeight = 56;
+			if (event.offsetY >= video.clientHeight - controlsHeight) {
+				return;
+			}
+
+			start();
+		});
 	}
 
 	function initAll(root) {
