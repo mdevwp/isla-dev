@@ -50,6 +50,15 @@ acf_add_local_field_group( array(
 			'placement' => 'top',
 		),
 		array(
+			'key'           => 'field_dpp_show_section',
+			'label'         => 'Show this section',
+			'name'          => 'dpp_show_section',
+			'type'          => 'true_false',
+			'ui'            => 1,
+			'default_value' => 1,
+			'instructions'  => 'Turn off to hide the section on the website while keeping all its settings.',
+		),
+		array(
 			'key'           => 'field_dpp_video_heading',
 			'label'         => 'Heading (H2)',
 			'name'          => 'dpp_heading',
