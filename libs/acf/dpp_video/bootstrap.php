@@ -11,7 +11,7 @@
  * fatal error on the front end.
  *
  * @package kmnd-child
- * @version 1.1.5
+ * @version 1.1.8
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,7 +22,7 @@ if ( defined( 'KMND_DPP_VIDEO_VERSION' ) ) {
 	return; // Already loaded.
 }
 
-define( 'KMND_DPP_VIDEO_VERSION', '1.1.5' );
+define( 'KMND_DPP_VIDEO_VERSION', '1.1.8' );
 define( 'KMND_DPP_VIDEO_DIR', __DIR__ );
 
 /**

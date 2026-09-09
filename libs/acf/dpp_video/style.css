@@ -143,6 +143,10 @@
 }
 
 .dpp-video-section__yt {
+	z-index: 0;
+}
+
+.dpp-video-section.is-playing .dpp-video-section__yt {
 	z-index: 3;
 }
 
