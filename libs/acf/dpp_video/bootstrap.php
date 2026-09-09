@@ -11,7 +11,7 @@
  * fatal error on the front end.
  *
  * @package kmnd-child
- * @version 1.1.8
+ * @version 1.1.9
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,8 +22,54 @@ if ( defined( 'KMND_DPP_VIDEO_VERSION' ) ) {
 	return; // Already loaded.
 }
 
-define( 'KMND_DPP_VIDEO_VERSION', '1.1.8' );
+define( 'KMND_DPP_VIDEO_VERSION', '1.1.9' );
 define( 'KMND_DPP_VIDEO_DIR', __DIR__ );
+
+/**
+ * Add a visibility switch immediately after the Content tab.
+ *
+ * Existing blocks have no saved value, which intentionally means visible.
+ */
+add_filter( 'acf/load_field_group', function ( $group ) {
+	if ( empty( $group['key'] ) || 'group_dpp_video_section' !== $group['key'] || empty( $group['fields'] ) ) {
+		return $group;
+	}
+	foreach ( $group['fields'] as $field ) {
+		if ( 'field_dpp_show_section' === ( $field['key'] ?? '' ) ) {
+			return $group;
+		}
+	}
+
+	$visibility = array(
+		'key'           => 'field_dpp_show_section',
+		'label'         => 'Show this section',
+		'name'          => 'dpp_show_section',
+		'type'          => 'true_false',
+		'ui'            => 1,
+		'default_value' => 1,
+		'instructions'  => 'Turn off to hide the section on the website while keeping all its settings.',
+	);
+
+	array_splice( $group['fields'], 1, 0, array( $visibility ) );
+
+	return $group;
+} );
+
+/**
+ * Hide only blocks that have been explicitly switched off.
+ */
+add_filter( 'render_block', function ( $content, $block ) {
+	if ( is_admin() || 'acf/dpp-video' !== ( $block['blockName'] ?? '' ) ) {
+		return $content;
+	}
+
+	$data = $block['attrs']['data'] ?? array();
+	if ( array_key_exists( 'dpp_show_section', $data ) && ! (bool) $data['dpp_show_section'] ) {
+		return '';
+	}
+
+	return $content;
+}, 10, 2 );
 
 /**
  * Register the block.
