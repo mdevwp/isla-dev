@@ -354,11 +354,6 @@ img.dpp-video-section__play-icon {
 	}
 
 	.dpp-video-section h2.dpp-video-section__heading {
-		/* the theme keeps .main-heading at 40px here, which is too heavy for
-		   a title this long on a phone — step it down and tighten the leading */
-		font-size: 28px;
-		line-height: 120%;
-		letter-spacing: -0.02em;
 		max-width: none;
 		margin-bottom: 24px;
 	}
@@ -383,7 +378,6 @@ img.dpp-video-section__play-icon {
 	}
 
 	.dpp-video-section h2.dpp-video-section__heading {
-		font-size: 26px;
 		margin-bottom: 20px;
 	}
 }
