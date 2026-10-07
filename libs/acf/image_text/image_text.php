@@ -53,39 +53,68 @@ if (!empty($logo_images)) {
 	}
 }
 
-$static_logos = count($resolved_logo_images) <= 4;
+$compact_logos = !empty($resolved_logo_images) && count($resolved_logo_images) <= 4;
+$display_logo_images = $resolved_logo_images;
+
+if ($compact_logos) {
+	$columns = count($resolved_logo_images) === 1 ? 1 : 2;
+	$items_per_cycle = $columns * 2;
+	$cycle = array();
+
+	for ($i = 0; $i < $items_per_cycle; $i++) {
+		$cycle[] = $resolved_logo_images[$i % count($resolved_logo_images)];
+	}
+
+	// Two identical halves allow the track to loop without an empty interval.
+	$display_logo_images = array_merge($cycle, $cycle);
+}
 
 
 ?>
 
 
-<section class="integrations<?= $static_logos ? ' integrations--static' : ''; ?>">
-	<?php if ($static_logos) : ?>
+<section class="integrations<?= $compact_logos ? ' integrations--compact' : ''; ?>">
+	<?php if ($compact_logos) : ?>
 		<style>
-			.integrations--static .scroll-wrapp { width: 100%; }
-			.integrations--static .inner-container {
+			.integrations--compact .scroll-wrapp {
+				width: 100%;
+				height: 340px;
+				overflow: hidden;
+			}
+			.integrations--compact .inner-container {
 				position: relative;
 				z-index: 0;
 				margin: 0;
 				max-width: none;
 				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(140px, 195px));
+				grid-template-columns: repeat(<?= (int) $columns; ?>, minmax(140px, 195px));
 				align-items: center;
 				justify-content: center;
 				gap: 40px;
+				animation: compactLogoLoop 16s linear infinite;
 			}
-			.integrations--static .scroll img {
+			.integrations--compact .scroll img {
 				animation: none !important;
 				width: 100% !important;
 				height: 150px !important;
 				margin: 0 !important;
 			}
+			@keyframes compactLogoLoop {
+				to { transform: translateY(calc(-50% - 20px)); }
+			}
 			@media (max-width: 991px) {
-				.integrations--static { padding-bottom: 70px !important; }
-				.integrations--static .inner-container {
-					grid-template-columns: repeat(auto-fit, minmax(120px, 170px));
+				.integrations--compact { padding-bottom: 70px !important; }
+				.integrations--compact .scroll-wrapp { height: 324px; }
+				.integrations--compact .inner-container {
+					grid-template-columns: repeat(<?= (int) $columns; ?>, minmax(120px, 170px));
 					gap: 24px;
 				}
+				@keyframes compactLogoLoop {
+					to { transform: translateY(calc(-50% - 12px)); }
+				}
+			}
+			@media (prefers-reduced-motion: reduce) {
+				.integrations--compact .inner-container { animation: none; }
 			}
 		</style>
 	<?php endif; ?>
@@ -122,11 +151,11 @@ $static_logos = count($resolved_logo_images) <= 4;
 				<div class="inner-container">
 				
 				
-					<?php if (!empty($resolved_logo_images)) {
-							$copies = $static_logos ? 1 : 2;
+					<?php if (!empty($display_logo_images)) {
+							$copies = $compact_logos ? 1 : 2;
 
 							for ($i=0; $i<$copies; $i++){
-								foreach ($resolved_logo_images as $image) {
+								foreach ($display_logo_images as $image) {
 									?>
 									<img loading="lazy" src="<?= esc_url($image['url']); ?>" alt="<?= esc_attr($image['alt']); ?>"
 										title="<?= esc_attr($image['title']); ?>" class="image-<?= esc_attr($image['index']); ?>" />
