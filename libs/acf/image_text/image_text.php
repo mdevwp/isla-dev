@@ -62,15 +62,31 @@ $logo_images = get_field('logo_images');
 
 							for ($i=0; $i<2; $i++){
 								foreach ($logo_images as $key => $item) {
-									$image = $item['logo'];
-									if (!empty($image)) {
-										$image_url = $image["url"];
-										$image_alt = $image['alt'] ?: '';
-										$image_title = $image['title'] ?: '';
+									$image = $item['logo'] ?? null;
+									$image_url = '';
+									$image_alt = '';
+									$image_title = '';
+
+									// ACF image fields can return an array, attachment ID or URL.
+									if (is_array($image)) {
+										$image_url = $image['url'] ?? '';
+										$image_alt = $image['alt'] ?? '';
+										$image_title = $image['title'] ?? '';
+									} elseif (is_numeric($image)) {
+										$image_id = (int) $image;
+										$image_url = wp_get_attachment_image_url($image_id, 'full') ?: '';
+										$image_alt = (string) get_post_meta($image_id, '_wp_attachment_image_alt', true);
+										$image_title = get_the_title($image_id);
+									} elseif (is_string($image)) {
+										$image_url = $image;
+									}
+
+									if (!$image_url) {
+										continue;
 									}
 									?>
-									<img loading="lazy" src="<?= $image_url; ?>" alt="Description of image <?= $key; ?>"
-										class="image-<?= $key; ?>" />
+									<img loading="lazy" src="<?= esc_url($image_url); ?>" alt="<?= esc_attr($image_alt); ?>"
+										title="<?= esc_attr($image_title); ?>" class="image-<?= esc_attr($key); ?>" />
 
 								<?php } 
 								
