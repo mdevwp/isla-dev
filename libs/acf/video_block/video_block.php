@@ -66,8 +66,9 @@ if(!empty($image)){
 			<?php }
 			
 			if($youtube_video && !empty($videoId)){ ?>					
-					<iframe src="https://www.youtube.com/embed/***?rel=0&amp;showinfo=0" width="300" height="150"
-						frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+					<iframe src="about:blank" width="300" height="150"
+						title="<?= esc_attr(!empty($title) ? $title : 'Video'); ?>" frameborder="0"
+						allowfullscreen="allowfullscreen"></iframe>
 			<?php } ?>	
 			
           </div>
