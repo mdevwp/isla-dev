@@ -57,9 +57,6 @@ $compact_logos = !empty($resolved_logo_images) && count($resolved_logo_images) <
 
 if ($compact_logos) {
 	$columns = count($resolved_logo_images) === 1 ? 1 : 2;
-	$rows = (int) ceil(count($resolved_logo_images) / $columns);
-	$desktop_track_height = ($rows * 150) + (max(0, $rows - 1) * 40);
-	$mobile_track_height = ($rows * 150) + (max(0, $rows - 1) * 24);
 }
 
 
@@ -71,8 +68,8 @@ if ($compact_logos) {
 		<style>
 			.integrations--compact .scroll-wrapp {
 				width: 100%;
-				height: <?= (int) $desktop_track_height; ?>px;
-				overflow: hidden;
+				height: auto;
+				overflow: visible;
 			}
 			.integrations--compact .inner-container {
 				position: relative;
@@ -93,7 +90,6 @@ if ($compact_logos) {
 			}
 			@media (max-width: 991px) {
 				.integrations--compact { padding-bottom: 70px !important; }
-				.integrations--compact .scroll-wrapp { height: <?= (int) $mobile_track_height; ?>px; }
 				.integrations--compact .inner-container {
 					grid-template-columns: repeat(<?= (int) $columns; ?>, minmax(120px, 170px));
 					gap: 24px;
