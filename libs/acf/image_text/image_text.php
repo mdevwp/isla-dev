@@ -54,19 +54,12 @@ if (!empty($logo_images)) {
 }
 
 $compact_logos = !empty($resolved_logo_images) && count($resolved_logo_images) <= 4;
-$display_logo_images = $resolved_logo_images;
 
 if ($compact_logos) {
 	$columns = count($resolved_logo_images) === 1 ? 1 : 2;
-	$items_per_cycle = $columns * 2;
-	$cycle = array();
-
-	for ($i = 0; $i < $items_per_cycle; $i++) {
-		$cycle[] = $resolved_logo_images[$i % count($resolved_logo_images)];
-	}
-
-	// Two identical halves allow the track to loop without an empty interval.
-	$display_logo_images = array_merge($cycle, $cycle);
+	$rows = (int) ceil(count($resolved_logo_images) / $columns);
+	$desktop_track_height = ($rows * 150) + (max(0, $rows - 1) * 40);
+	$mobile_track_height = ($rows * 150) + (max(0, $rows - 1) * 24);
 }
 
 
@@ -78,7 +71,7 @@ if ($compact_logos) {
 		<style>
 			.integrations--compact .scroll-wrapp {
 				width: 100%;
-				height: 340px;
+				height: <?= (int) $desktop_track_height; ?>px;
 				overflow: hidden;
 			}
 			.integrations--compact .inner-container {
@@ -91,7 +84,6 @@ if ($compact_logos) {
 				align-items: center;
 				justify-content: center;
 				gap: 40px;
-				animation: compactLogoLoop 16s linear infinite;
 			}
 			.integrations--compact .scroll img {
 				animation: none !important;
@@ -99,22 +91,13 @@ if ($compact_logos) {
 				height: 150px !important;
 				margin: 0 !important;
 			}
-			@keyframes compactLogoLoop {
-				to { transform: translateY(calc(-50% - 20px)); }
-			}
 			@media (max-width: 991px) {
 				.integrations--compact { padding-bottom: 70px !important; }
-				.integrations--compact .scroll-wrapp { height: 324px; }
+				.integrations--compact .scroll-wrapp { height: <?= (int) $mobile_track_height; ?>px; }
 				.integrations--compact .inner-container {
 					grid-template-columns: repeat(<?= (int) $columns; ?>, minmax(120px, 170px));
 					gap: 24px;
 				}
-				@keyframes compactLogoLoop {
-					to { transform: translateY(calc(-50% - 12px)); }
-				}
-			}
-			@media (prefers-reduced-motion: reduce) {
-				.integrations--compact .inner-container { animation: none; }
 			}
 		</style>
 	<?php endif; ?>
@@ -151,18 +134,18 @@ if ($compact_logos) {
 				<div class="inner-container">
 				
 				
-					<?php if (!empty($display_logo_images)) {
-							$copies = $compact_logos ? 1 : 2;
-
-							for ($i=0; $i<$copies; $i++){
-								foreach ($display_logo_images as $image) {
-									?>
-									<img loading="lazy" src="<?= esc_url($image['url']); ?>" alt="<?= esc_attr($image['alt']); ?>"
-										title="<?= esc_attr($image['title']); ?>" class="image-<?= esc_attr($image['index']); ?>" />
-
-								<?php } 
-								
-							}	?>
+					<?php if ($compact_logos) { ?>
+						<?php foreach ($resolved_logo_images as $image) { ?>
+							<img loading="lazy" src="<?= esc_url($image['url']); ?>" alt="<?= esc_attr($image['alt']); ?>"
+								title="<?= esc_attr($image['title']); ?>" class="image-<?= esc_attr($image['index']); ?>" />
+						<?php } ?>
+					<?php } elseif (!empty($resolved_logo_images)) { ?>
+						<?php for ($i = 0; $i < 2; $i++) { ?>
+							<?php foreach ($resolved_logo_images as $image) { ?>
+								<img loading="lazy" src="<?= esc_url($image['url']); ?>" alt="<?= esc_attr($image['alt']); ?>"
+									title="<?= esc_attr($image['title']); ?>" class="image-<?= esc_attr($image['index']); ?>" />
+							<?php } ?>
+						<?php } ?>
 					<?php } ?>
 <!--
 					<?php if (!empty($logo_images)) { ?>
