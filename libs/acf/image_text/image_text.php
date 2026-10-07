@@ -57,6 +57,9 @@ $compact_logos = !empty($resolved_logo_images) && count($resolved_logo_images) <
 
 if ($compact_logos) {
 	$columns = count($resolved_logo_images) === 1 ? 1 : 2;
+	$rows = (int) ceil(count($resolved_logo_images) / $columns);
+	$compact_content_height = ($rows * 150) + (max(0, $rows - 1) * 40);
+	$compact_viewport_height = $compact_content_height + 140;
 }
 
 
@@ -68,8 +71,8 @@ if ($compact_logos) {
 		<style>
 			.integrations--compact .scroll-wrapp {
 				width: 100%;
-				height: auto;
-				overflow: visible;
+				height: <?= (int) $compact_viewport_height; ?>px;
+				overflow: hidden;
 			}
 			.integrations--compact .inner-container {
 				position: relative;
@@ -81,6 +84,8 @@ if ($compact_logos) {
 				align-items: center;
 				justify-content: center;
 				gap: 40px;
+				padding: 70px 0;
+				animation: compactLogoMove 14s linear infinite;
 			}
 			.integrations--compact .scroll img {
 				animation: none !important;
@@ -88,11 +93,29 @@ if ($compact_logos) {
 				height: 150px !important;
 				margin: 0 !important;
 			}
+			@keyframes compactLogoMove {
+				0% {
+					transform: translateY(70px);
+					opacity: 0;
+				}
+				8%, 92% { opacity: 1; }
+				100% {
+					transform: translateY(-70px);
+					opacity: 0;
+				}
+			}
 			@media (max-width: 991px) {
 				.integrations--compact { padding-bottom: 70px !important; }
 				.integrations--compact .inner-container {
 					grid-template-columns: repeat(<?= (int) $columns; ?>, minmax(120px, 170px));
 					gap: 24px;
+				}
+			}
+			@media (prefers-reduced-motion: reduce) {
+				.integrations--compact .inner-container {
+					animation: none;
+					transform: none;
+					opacity: 1;
 				}
 			}
 		</style>
