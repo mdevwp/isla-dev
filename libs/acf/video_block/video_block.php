@@ -91,7 +91,7 @@ if(!empty($image)){
 					  <a href="<?= esc_url($btn1_url); ?>" class="btn cta-button primary" target="<?= esc_attr($btn1_target); ?>"><?= esc_html($btn1_title); ?></a>
 					<?php } ?>
 					<?php if(!empty($btn_2)){ ?>
-					  <a  class="btn login-button secondary" target="<?= esc_attr($btn2_target); ?>">
+					  <a href="<?= esc_url($btn2_url); ?>" class="btn login-button secondary" target="<?= esc_attr($btn2_target); ?>">
 						<?= esc_html($btn2_title); ?>
 					  </a>
 					<?php } ?>
