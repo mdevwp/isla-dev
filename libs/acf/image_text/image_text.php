@@ -59,7 +59,8 @@ if ($compact_logos) {
 	$columns = count($resolved_logo_images) === 1 ? 1 : 2;
 	$rows = (int) ceil(count($resolved_logo_images) / $columns);
 	$compact_content_height = ($rows * 150) + (max(0, $rows - 1) * 40);
-	$compact_viewport_height = $compact_content_height + 140;
+	$compact_viewport_height = max(500, $compact_content_height + 140);
+	$compact_travel = (int) ceil(($compact_viewport_height + $compact_content_height) / 2);
 }
 
 
@@ -95,12 +96,12 @@ if ($compact_logos) {
 			}
 			@keyframes compactLogoMove {
 				0% {
-					transform: translateY(70px);
+					transform: translateY(<?= (int) $compact_travel; ?>px);
 					opacity: 0;
 				}
 				8%, 92% { opacity: 1; }
 				100% {
-					transform: translateY(-70px);
+					transform: translateY(-<?= (int) $compact_travel; ?>px);
 					opacity: 0;
 				}
 			}
